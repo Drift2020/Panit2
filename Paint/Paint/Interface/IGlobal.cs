@@ -13,5 +13,6 @@ namespace Paint.Interface
         event EventHandler<EventArgs> SaveImage;
         event EventHandler<EventArgs> NewImage;
         string NameRadioButton{set; get;}
+        string[] Instrument { set; get; }
     }
 }

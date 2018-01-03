@@ -20,8 +20,16 @@ namespace Paint
         public event EventHandler<EventArgs> NewImage;
         #endregion event
 
+        #region poleThis
+        
+        string nameRadioButton;
+        string[] instrument= { "Pen","Ruler","Figure","Text"};
+
+        #endregion poleThis
+        
         #region pole
-        public string NameRadioButton{set;get;}
+        public string NameRadioButton{ set { nameRadioButton = value; } get { return nameRadioButton; } }
+        public string[] Instrument { set { instrument = value; } get { return instrument; } }
         #endregion pole
 
         public Form1()
@@ -29,10 +37,36 @@ namespace Paint
             InitializeComponent();
 
         }
+        
+        private void MousSelect()
+        {
+            
+            if (nameRadioButton == Instrument[0])
+            {     
+                
+                pictureBox1.Cursor = new Cursor("../../Curkol/pen.cur");
+               
+            }
+            else if (nameRadioButton == Instrument[1])
+            {
+                pictureBox1.Cursor = new Cursor("../../Curkol/brush.cur");
+            }
+            else if (nameRadioButton == Instrument[2])
+            {
+                pictureBox1.Cursor = new Cursor("../../Curkol/cursor2.cur");
+                
+            }
+            else if (nameRadioButton == Instrument[3])
+            {
 
+                pictureBox1.Cursor = Cursors.Arrow;
+            }
+        }
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-
+            nameRadioButton = (sender as RadioButton).Name;
+            RadioButton?.Invoke(this, EventArgs.Empty);
+            MousSelect();
         }
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
@@ -55,6 +89,9 @@ namespace Paint
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.Pen.Checked = true;
+            radioButton1_CheckedChanged(this.Pen, EventArgs.Empty);
+
             Bitmap screenPicture = new Bitmap(pictureBox1.Width, pictureBox1.Height);            
             pictureBox1.Image = screenPicture;
             using (var g = Graphics.FromImage(pictureBox1.Image))
