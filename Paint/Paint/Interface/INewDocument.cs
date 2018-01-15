@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Paint.Interface
 {
-    interface INewDocument
+   public interface INewDocument
     {
+        int HeightP { set; get; }
+        int WidthP { set; get; }
     }
 }

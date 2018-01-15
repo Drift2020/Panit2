@@ -8,5 +8,10 @@ namespace Paint.Presenter
 {
     class PNewDocument
     {
+        NewImage _view;
+        public PNewDocument(NewImage view)
+        {
+
+        }
     }
 }

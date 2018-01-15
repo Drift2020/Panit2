@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Paint.Interface
 {
-    interface IPalette
+    public interface IPalette
     {
     }
 }
