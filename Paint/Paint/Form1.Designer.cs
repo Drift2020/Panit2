@@ -44,22 +44,22 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.widthPen = new System.Windows.Forms.NumericUpDown();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.viewFigure = new System.Windows.Forms.PictureBox();
             this.tyPalit = new System.Windows.Forms.PictureBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.onePalit = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.widthPen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.viewFigure)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tyPalit)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.onePalit)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -231,12 +231,28 @@
             this.textBox1.Size = new System.Drawing.Size(121, 20);
             this.textBox1.TabIndex = 11;
             // 
-            // numericUpDown1
+            // widthPen
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(340, 291);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(49, 20);
-            this.numericUpDown1.TabIndex = 12;
+            this.widthPen.Location = new System.Drawing.Point(340, 291);
+            this.widthPen.Maximum = new decimal(new int[] {
+            -1530494977,
+            232830,
+            0,
+            0});
+            this.widthPen.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.widthPen.Name = "widthPen";
+            this.widthPen.Size = new System.Drawing.Size(49, 20);
+            this.widthPen.TabIndex = 12;
+            this.widthPen.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.widthPen.ValueChanged += new System.EventHandler(this.widthPen_ValueChanged);
             // 
             // pictureBox1
             // 
@@ -252,7 +268,6 @@
             // 
             // viewFigure
             // 
-            this.viewFigure.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.viewFigure.Location = new System.Drawing.Point(12, 281);
             this.viewFigure.Name = "viewFigure";
             this.viewFigure.Size = new System.Drawing.Size(91, 63);
@@ -269,15 +284,15 @@
             this.tyPalit.TabStop = false;
             this.tyPalit.Click += new System.EventHandler(this.tyPalit_Click);
             // 
-            // pictureBox4
+            // onePalit
             // 
-            this.pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox4.Location = new System.Drawing.Point(136, 281);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(51, 49);
-            this.pictureBox4.TabIndex = 16;
-            this.pictureBox4.TabStop = false;
-            this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
+            this.onePalit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.onePalit.Location = new System.Drawing.Point(136, 281);
+            this.onePalit.Name = "onePalit";
+            this.onePalit.Size = new System.Drawing.Size(51, 49);
+            this.onePalit.TabIndex = 16;
+            this.onePalit.TabStop = false;
+            this.onePalit.Click += new System.EventHandler(this.onePalit_Click);
             // 
             // openFileDialog1
             // 
@@ -303,10 +318,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(683, 354);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.pictureBox4);
+            this.Controls.Add(this.onePalit);
             this.Controls.Add(this.tyPalit);
             this.Controls.Add(this.viewFigure);
-            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.widthPen);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -323,11 +338,11 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.widthPen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.viewFigure)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tyPalit)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.onePalit)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -353,11 +368,11 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown widthPen;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox viewFigure;
         private System.Windows.Forms.PictureBox tyPalit;
-        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.PictureBox onePalit;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.FontDialog fontDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;

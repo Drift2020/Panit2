@@ -32,6 +32,7 @@ namespace Paint
         Color myColor;
         Color myColor2;
         SolidBrush myBrush;
+        float WidthPen { set { widthPen.Value = Decimal.Parse(value.ToString()); }get { return float.Parse(widthPen.Value.ToString()); } }
         int x;
         int y;
         int width = 1000;
@@ -49,11 +50,35 @@ namespace Paint
             InitializeComponent();
             myColor = Color.Black;
             myColor2 = Color.White;
-            pen = new Pen(myColor, 5.0f);
+            pen = new Pen(myColor, WidthPen);
             myBrush = new SolidBrush(myColor);
+            
+
             openFileDialog1.InitialDirectory = saveFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
         }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this.Pen.Checked = true;
+            radioButton1_CheckedChanged(this.Pen, EventArgs.Empty);
 
+
+            Image im = new Bitmap(width, height);
+            g = Graphics.FromImage(im);
+            g.Clear(Color.White);
+            g.Dispose();
+            if (pictureBox1.Image != null)
+                pictureBox1.Image.Dispose();
+            pictureBox1.Image = im;
+
+            PrintViewFigure();
+            Palitres();
+
+
+            g = Graphics.FromImage(pictureBox1.Image);
+        }
+
+
+        #region RadioButton
         private void MousSelect()
         {
             try
@@ -87,29 +112,12 @@ namespace Paint
             RadioButton?.Invoke(this, EventArgs.Empty);
             MousSelect();
         }
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            this.Pen.Checked = true;
-            radioButton1_CheckedChanged(this.Pen, EventArgs.Empty);
-
-
-            Image im = new Bitmap(width, height);
-            g = Graphics.FromImage(im);
-            g.Clear(Color.White);
-            g.Dispose();
-            if (pictureBox1.Image != null)
-                pictureBox1.Image.Dispose();
-            pictureBox1.Image = im;
-
-            pictureBox4.BackColor = myColor;
-            tyPalit.BackColor = myColor2;
-
-            g = Graphics.FromImage(pictureBox1.Image);
-            // g.FillRectangle(Brushes.Black, 0, 0, bmp.Width, bmp.Height);
-        }
+        #endregion RadioButton
 
        
-#region Paint
+       
+
+        #region Paint
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -131,7 +139,7 @@ namespace Paint
             {
                 if (nameRadioButton == Instrument[0])
                 {
-                    g.FillRectangle(myBrush, e.X, e.Y, 1, 1);
+                    g.FillRectangle(myBrush, e.X, e.Y, WidthPen, WidthPen);
                     pictureBox1.Invalidate();
                 }
                 else if (nameRadioButton == Instrument[1])
@@ -143,13 +151,21 @@ namespace Paint
                     g.Dispose();
                     g = Graphics.FromImage(pictureBox1.Image);
                     if (e.X < x && e.Y < y)
+                    {
                         g.DrawRectangle(pen, e.X, e.Y, x - e.X, y - e.Y);
+                    }
                     else if (e.X < x)
+                    {
                         g.DrawRectangle(pen, e.X, y, x - e.X, e.Y - y);
+                    }
                     else if (e.Y < y)
+                    {
                         g.DrawRectangle(pen, x, e.Y, e.X - x, y - e.Y);
+                    }
                     else
+                    {
                         g.DrawRectangle(pen, x, y, e.X - x, e.Y - y);
+                    }
                     pictureBox1.Invalidate();
                 }
                 else if (nameRadioButton == Instrument[3])
@@ -165,7 +181,7 @@ namespace Paint
                 pictureBox1.Invalidate();
                 if (nameRadioButton == Instrument[0])
                 {
-                    g.FillRectangle(myBrush, e.X, e.Y, 1, 1);
+                    g.FillRectangle(myBrush, e.X, e.Y, WidthPen, WidthPen);
                     pictureBox1.Invalidate();
                 }
                 else if (nameRadioButton == Instrument[1])
@@ -178,7 +194,7 @@ namespace Paint
                     {
                         g.DrawRectangle(pen, e.X, e.Y, x - e.X, y - e.Y);
 
-                        g.FillRectangle(myBrush, e.X, e.Y, x - e.X, y - e.Y);
+                     
                     }
                     else if (e.X < x)
                     {
@@ -201,8 +217,31 @@ namespace Paint
             }
 
         }
-#endregion Paint
-        private void pictureBox4_Click(object sender, EventArgs e)
+        #endregion Paint
+
+
+
+        #region Palitres
+        private void Palitres()
+        {
+            onePalit.BackColor = myColor;
+            tyPalit.BackColor = myColor2;
+        }
+        private void PrintViewFigure()
+        {
+            Image im = new Bitmap(viewFigure.Width, viewFigure.Height);
+            using (Graphics temp = Graphics.FromImage(im)) {                             
+                temp.Clear(myColor2);
+                temp.DrawRectangle(pen, 0, 0, viewFigure.ClientSize.Width, viewFigure.ClientSize.Height);
+                temp.Dispose();
+                if (viewFigure.Image != null)
+                    viewFigure.Image.Dispose();
+                viewFigure.Image = im;
+
+               
+            }
+        }
+        private void onePalit_Click(object sender, EventArgs e)
         {
             colorDialog1.Color = myColor;
             if (colorDialog1.ShowDialog() == DialogResult.OK)
@@ -211,14 +250,13 @@ namespace Paint
                 myBrush.Dispose();
                 myColor = colorDialog1.Color;
 
-                pen = new Pen(myColor, 5.0f);
+                onePalit.BackColor = myColor;
+
+                pen = new Pen(myColor, WidthPen);
                 myBrush = new SolidBrush(myColor);
-                
+               
 
-
-                viewFigure.BorderStyle = BorderStyle.FixedSingle;
-
-                pictureBox4.BackColor = myColor;
+                PrintViewFigure();
             }
         }
         private void tyPalit_Click(object sender, EventArgs e)
@@ -228,17 +266,14 @@ namespace Paint
             {
                
                 myColor2 = colorDialog1.Color;
-
-              
-
-                viewFigure.BackColor = myColor2;
-
-
                 tyPalit.BackColor = myColor2;
+
+                PrintViewFigure();
             }
         }
+        #endregion Palotres
 
-
+        #region ControlButt
         private void buttonSave_Click(object sender, EventArgs e)
         {
             string s0 = saveFileDialog1.FileName;
@@ -318,7 +353,6 @@ namespace Paint
                 pictureBox1.Image = im;
             }
         }
-
         private void buttonClear_Click(object sender, EventArgs e)
         {
           
@@ -327,7 +361,12 @@ namespace Paint
 
 
         }
-
-       
+        #endregion ControlButt
+        private void widthPen_ValueChanged(object sender, EventArgs e)
+        {
+            pen.Dispose();
+            pen = new Pen(myColor, WidthPen);
+            PrintViewFigure();
+        }
     }
 }
