@@ -22,7 +22,7 @@ namespace Paint
 
         #endregion event
 
-        #region poleThis
+        #region poleThisClass
 
         string nameRadioButton;
         string[] instrument = { "Pen", "Ruler", "Figure", "Text" };
@@ -32,12 +32,23 @@ namespace Paint
         Color myColor;
         Color myColor2;
         SolidBrush myBrush;
+        Font tempFont;
+        Font font;
+        bool Transparent { set { checkBox1.Checked = value; }get { return checkBox1.Checked; } }
+        bool rectangle;
         float WidthPen { set { widthPen.Value = Decimal.Parse(value.ToString()); }get { return float.Parse(widthPen.Value.ToString()); } }
+
         int x;
         int y;
         int width = 1000;
         int height = 300;
-        #endregion poleThis
+        int numberStylePen=0;
+        string str = "Transp.";
+        int sizeStr = 10;
+        int  dopSizeW =4;
+        int dopSizeH = 6;
+      
+        #endregion poleThisClass
 
         #region pole
         public string NameRadioButton { set { nameRadioButton = value; } get { return nameRadioButton; } }
@@ -51,7 +62,9 @@ namespace Paint
             myColor = Color.Black;
             myColor2 = Color.White;
             pen = new Pen(myColor, WidthPen);
-            myBrush = new SolidBrush(myColor);
+            tempFont = new Font("Arial", sizeStr);
+            rectangle = true;
+             myBrush = new SolidBrush(myColor2);
             
 
             openFileDialog1.InitialDirectory = saveFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
@@ -60,7 +73,9 @@ namespace Paint
         {
             this.Pen.Checked = true;
             radioButton1_CheckedChanged(this.Pen, EventArgs.Empty);
+            comboBox1.SelectedIndex = 0;
 
+           
 
             Image im = new Bitmap(width, height);
             g = Graphics.FromImage(im);
@@ -71,7 +86,7 @@ namespace Paint
             pictureBox1.Image = im;
 
             PrintViewFigure();
-            Palitres();
+            PalitresColor();
 
 
             g = Graphics.FromImage(pictureBox1.Image);
@@ -113,9 +128,7 @@ namespace Paint
             MousSelect();
         }
         #endregion RadioButton
-
-       
-       
+            
 
         #region Paint
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
@@ -139,7 +152,7 @@ namespace Paint
             {
                 if (nameRadioButton == Instrument[0])
                 {
-                    g.FillRectangle(myBrush, e.X, e.Y, WidthPen, WidthPen);
+                    g.FillEllipse(myBrush, e.X, e.Y, WidthPen, WidthPen);
                     pictureBox1.Invalidate();
                 }
                 else if (nameRadioButton == Instrument[1])
@@ -150,22 +163,7 @@ namespace Paint
                 {
                     g.Dispose();
                     g = Graphics.FromImage(pictureBox1.Image);
-                    if (e.X < x && e.Y < y)
-                    {
-                        g.DrawRectangle(pen, e.X, e.Y, x - e.X, y - e.Y);
-                    }
-                    else if (e.X < x)
-                    {
-                        g.DrawRectangle(pen, e.X, y, x - e.X, e.Y - y);
-                    }
-                    else if (e.Y < y)
-                    {
-                        g.DrawRectangle(pen, x, e.Y, e.X - x, y - e.Y);
-                    }
-                    else
-                    {
-                        g.DrawRectangle(pen, x, y, e.X - x, e.Y - y);
-                    }
+                    DravFigure(e);
                     pictureBox1.Invalidate();
                 }
                 else if (nameRadioButton == Instrument[3])
@@ -181,7 +179,7 @@ namespace Paint
                 pictureBox1.Invalidate();
                 if (nameRadioButton == Instrument[0])
                 {
-                    g.FillRectangle(myBrush, e.X, e.Y, WidthPen, WidthPen);
+                    g.FillEllipse(myBrush, e.X, e.Y, WidthPen, WidthPen);
                     pictureBox1.Invalidate();
                 }
                 else if (nameRadioButton == Instrument[1])
@@ -190,11 +188,69 @@ namespace Paint
                 }
                 else if (nameRadioButton == Instrument[2])
                 {
+                    DravFigure(e);
+                }
+                else if (nameRadioButton == Instrument[3])
+                {
+
+                }
+            }
+
+             label1.Text="X: "+ e.X+" Y: " + e.Y;
+          
+        }
+
+        private void DravFigure(MouseEventArgs e)
+        {
+            if (!Transparent)
+            {
+                if (rectangle)
+                {
+                    if (e.X < x && e.Y < y)
+                    {
+                        g.FillRectangle(myBrush, e.X, e.Y, x - e.X, y - e.Y);
+                    }
+                    else if (e.X < x)
+                    {
+                        g.FillRectangle(myBrush, e.X, y, x - e.X, e.Y - y);
+                    }
+                    else if (e.Y < y)
+                    {
+                        g.FillRectangle(myBrush, x, e.Y, e.X - x, y - e.Y);
+                    }
+                    else
+                    {
+                        g.FillRectangle(myBrush, x, y, e.X - x, e.Y - y);
+                    }
+                }
+                else
+                {
+                    if (e.X < x && e.Y < y)
+                    {
+                        g.FillEllipse(myBrush, new Rectangle(e.X, e.Y, x - e.X, y - e.Y));
+
+                    }
+                    else if (e.X < x)
+                    {
+                        g.FillEllipse(myBrush, new Rectangle(e.X, y, x - e.X, e.Y - y));
+                    }
+                    else if (e.Y < y)
+                    {
+                        g.FillEllipse(myBrush, new Rectangle(x, e.Y, e.X - x, y - e.Y));
+                    }
+                    else
+                    {
+                        g.FillEllipse(myBrush, new Rectangle(x, y, e.X - x, e.Y - y));
+                    }
+
+                }
+
+            }
+            if (rectangle)
+                {
                     if (e.X < x && e.Y < y)
                     {
                         g.DrawRectangle(pen, e.X, e.Y, x - e.X, y - e.Y);
-
-                     
                     }
                     else if (e.X < x)
                     {
@@ -208,54 +264,94 @@ namespace Paint
                     {
                         g.DrawRectangle(pen, x, y, e.X - x, e.Y - y);
                     }
-                    
                 }
-                else if (nameRadioButton == Instrument[3])
+                else
                 {
+                    if (e.X < x && e.Y < y)
+                    {
+                        g.DrawEllipse(pen, new Rectangle(e.X, e.Y, x - e.X, y - e.Y));
+
+                    }
+                    else if (e.X < x)
+                    {
+                        g.DrawEllipse(pen, new Rectangle(e.X, y, x - e.X, e.Y - y));
+                    }
+                    else if (e.Y < y)
+                    {
+                        g.DrawEllipse(pen, new Rectangle(x, e.Y, e.X - x, y - e.Y));
+                    }
+                    else
+                    {
+                        g.DrawEllipse(pen, new Rectangle(x, y, e.X - x, e.Y - y));
+                    }
 
                 }
-            }
 
+          
+            
         }
         #endregion Paint
 
 
-
         #region Palitres
-        private void Palitres()
+        private void PalitresColor()
         {
             onePalit.BackColor = myColor;
             tyPalit.BackColor = myColor2;
         }
         private void PrintViewFigure()
         {
+           
             Image im = new Bitmap(viewFigure.Width, viewFigure.Height);
-            using (Graphics temp = Graphics.FromImage(im)) {                             
-                temp.Clear(myColor2);
-                temp.DrawRectangle(pen, 0, 0, viewFigure.ClientSize.Width, viewFigure.ClientSize.Height);
+            using (Graphics temp = Graphics.FromImage(im))
+            {
+                if (!Transparent)
+                    temp.Clear(myColor2);
+                else              
+                    using (SolidBrush b = new SolidBrush(Color.Black))
+                        temp.DrawString(str, tempFont, b, viewFigure.Width / 2 - (str.Length + sizeStr + dopSizeW), viewFigure.Height / 2 - dopSizeH);
+
+
+                if (rectangle)
+                {
+                    temp.DrawRectangle(pen, 0, 0, viewFigure.ClientSize.Width, viewFigure.ClientSize.Height);
+                    using (GraphicsPath path = new GraphicsPath())
+                    {
+                        path.AddRectangle(new Rectangle(0, 0, viewFigure.ClientSize.Width, viewFigure.ClientSize.Height));
+                        viewFigure.Region = new Region(path);
+                    }
+                }
+                else
+                {
+                    temp.DrawEllipse(pen, new Rectangle(0, 0, viewFigure.ClientSize.Width, viewFigure.ClientSize.Height));
+                    using (GraphicsPath path = new GraphicsPath())
+                    {
+                        path.AddEllipse(0, 0, viewFigure.ClientSize.Width, viewFigure.ClientSize.Height);
+                        viewFigure.Region = new Region(path);
+                    }
+                }
+                
+                
                 temp.Dispose();
                 if (viewFigure.Image != null)
                     viewFigure.Image.Dispose();
                 viewFigure.Image = im;
 
-               
+
             }
+
         }
         private void onePalit_Click(object sender, EventArgs e)
         {
             colorDialog1.Color = myColor;
             if (colorDialog1.ShowDialog() == DialogResult.OK)
-            {
-                pen.Dispose();
-                myBrush.Dispose();
+            {                           
                 myColor = colorDialog1.Color;
 
                 onePalit.BackColor = myColor;
 
-                pen = new Pen(myColor, WidthPen);
-                myBrush = new SolidBrush(myColor);
-               
-
+                pen.Color= myColor;
+                             
                 PrintViewFigure();
             }
         }
@@ -263,13 +359,38 @@ namespace Paint
         {
             colorDialog1.Color = myColor2;
             if (colorDialog1.ShowDialog() == DialogResult.OK)
-            {
-               
+            {              
                 myColor2 = colorDialog1.Color;
                 tyPalit.BackColor = myColor2;
-
+                myBrush.Color = myColor2;
                 PrintViewFigure();
             }
+        }
+
+        private void widthPen_ValueChanged(object sender, EventArgs e)
+        {
+
+            pen.Width = WidthPen;
+            PrintViewFigure();
+
+        }
+        private void StylePen()
+        {
+            pen.DashStyle = (DashStyle)numberStylePen;
+        }
+        private void comboBox1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+            using (Pen p = new Pen(e.ForeColor, 2))
+            {
+                numberStylePen = e.Index;
+                pen.DashStyle = (DashStyle)e.Index;
+                p.DashStyle = (DashStyle)e.Index;
+                int y = (e.Bounds.Top + e.Bounds.Bottom) / 2;
+                e.Graphics.DrawLine(p, e.Bounds.Left, y, e.Bounds.Right, y);
+            }
+            e.DrawFocusRectangle();
+            PrintViewFigure();
         }
         #endregion Palotres
 
@@ -352,21 +473,51 @@ namespace Paint
                     pictureBox1.Image.Dispose();
                 pictureBox1.Image = im;
             }
+
+            NewImage_form.Dispose();
         }
         private void buttonClear_Click(object sender, EventArgs e)
         {
-          
-            g.Clear(Color.White);
-            pictureBox1.Invalidate();
+
+            DialogResult result = MessageBox.Show("Do you want to clear this picture?", "Сlear",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            if (result == DialogResult.OK)
+            {
+                g.Clear(myColor2);
+                pictureBox1.Invalidate();
+            }
 
 
         }
+
         #endregion ControlButt
-        private void widthPen_ValueChanged(object sender, EventArgs e)
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            pen.Dispose();
-            pen = new Pen(myColor, WidthPen);
             PrintViewFigure();
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+            DialogResult result = MessageBox.Show("Do you want to exit this app?", "Exit",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            if (result == DialogResult.OK)
+                e.Cancel = false;
+            else
+                e.Cancel = true;
+            
+        }
+
+        private void viewFigure_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                rectangle = !rectangle;
+                PrintViewFigure();
+            }
+        }
+
+       
     }
 }

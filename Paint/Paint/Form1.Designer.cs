@@ -166,8 +166,11 @@
             // 
             // comboBox1
             // 
-            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.Items.AddRange(new object[] {
+            "0",
             "1",
             "2",
             "3",
@@ -176,9 +179,11 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 5;
+            this.comboBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox1_DrawItem);
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label1.Location = new System.Drawing.Point(552, 322);
             this.label1.Name = "label1";
@@ -189,6 +194,7 @@
             // 
             // Font_f
             // 
+            this.Font_f.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.Font_f.Location = new System.Drawing.Point(450, 321);
             this.Font_f.Name = "Font_f";
             this.Font_f.Size = new System.Drawing.Size(75, 23);
@@ -205,6 +211,7 @@
             this.checkBox1.TabIndex = 8;
             this.checkBox1.Text = "Transparent";
             this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // label2
             // 
@@ -230,6 +237,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(121, 20);
             this.textBox1.TabIndex = 11;
+            this.textBox1.Text = "Example";
             // 
             // widthPen
             // 
@@ -273,6 +281,7 @@
             this.viewFigure.Size = new System.Drawing.Size(91, 63);
             this.viewFigure.TabIndex = 14;
             this.viewFigure.TabStop = false;
+            this.viewFigure.MouseUp += new System.Windows.Forms.MouseEventHandler(this.viewFigure_MouseUp);
             // 
             // tyPalit
             // 
@@ -304,6 +313,9 @@
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoScroll = true;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Controls.Add(this.pictureBox1);
@@ -335,6 +347,7 @@
             this.Controls.Add(this.buttonOpen);
             this.Controls.Add(this.buttonNew);
             this.Name = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
