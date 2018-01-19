@@ -32,12 +32,12 @@ namespace Paint
         Color myColor;
         Color myColor2;
         SolidBrush myBrush;
+        SolidBrush myBrushPen;
         Font tempFont;
         Font font;
         bool Transparent { set { checkBox1.Checked = value; }get { return checkBox1.Checked; } }
         bool rectangle;
         float WidthPen { set { widthPen.Value = Decimal.Parse(value.ToString()); }get { return float.Parse(widthPen.Value.ToString()); } }
-
         int x;
         int y;
         int width = 1000;
@@ -64,9 +64,9 @@ namespace Paint
             pen = new Pen(myColor, WidthPen);
             tempFont = new Font("Arial", sizeStr);
             rectangle = true;
-             myBrush = new SolidBrush(myColor2);
-            
-
+            myBrush = new SolidBrush(myColor2);
+            myBrushPen = new SolidBrush(myColor);
+            font = new Font("Arial", sizeStr);
             openFileDialog1.InitialDirectory = saveFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
         }
         private void Form1_Load(object sender, EventArgs e)
@@ -92,7 +92,6 @@ namespace Paint
             g = Graphics.FromImage(pictureBox1.Image);
         }
 
-
         #region RadioButton
         private void MousSelect()
         {
@@ -107,6 +106,8 @@ namespace Paint
                 else if (nameRadioButton == Instrument[1])
                 {
                     pictureBox1.Cursor = new Cursor("../../Curkol/brush.cur");
+                    g.Dispose();
+                    g = Graphics.FromHwnd(pictureBox1.Handle);
                 }
                 else if (nameRadioButton == Instrument[2])
                 {
@@ -129,7 +130,6 @@ namespace Paint
         }
         #endregion RadioButton
             
-
         #region Paint
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
@@ -137,7 +137,7 @@ namespace Paint
             {
                 x = e.X;
                 y = e.Y;
-                if (nameRadioButton == Instrument[2])
+                if (nameRadioButton == Instrument[2]|| nameRadioButton == Instrument[1] || nameRadioButton == Instrument[3])
                 {
                     g.Dispose();
                     g = Graphics.FromHwnd(pictureBox1.Handle);
@@ -145,7 +145,6 @@ namespace Paint
                 }
             }
         }
-
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -153,22 +152,29 @@ namespace Paint
                 if (nameRadioButton == Instrument[0])
                 {
                     g.FillEllipse(myBrush, e.X, e.Y, WidthPen, WidthPen);
-                    pictureBox1.Invalidate();
+                   
                 }
                 else if (nameRadioButton == Instrument[1])
                 {
-
+                    g.Dispose();
+                    g = Graphics.FromImage(pictureBox1.Image);
+                    g.DrawLine(pen, e.X, e.Y, x, y);
                 }
                 else if (nameRadioButton == Instrument[2])
                 {
                     g.Dispose();
                     g = Graphics.FromImage(pictureBox1.Image);
                     DravFigure(e);
-                    pictureBox1.Invalidate();
+                    
                 }
                 else if (nameRadioButton == Instrument[3])
                 {
+                    g.Dispose();
+                    g = Graphics.FromImage(pictureBox1.Image);
+
+                    g.DrawString(textBox1.Text, font, myBrushPen, x, y- font.Size);
                 }
+                pictureBox1.Invalidate();
             }
         }    
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
@@ -179,12 +185,12 @@ namespace Paint
                 pictureBox1.Invalidate();
                 if (nameRadioButton == Instrument[0])
                 {
-                    g.FillEllipse(myBrush, e.X, e.Y, WidthPen, WidthPen);
+                    g.FillEllipse(myBrushPen, e.X, e.Y, WidthPen, WidthPen);
                     pictureBox1.Invalidate();
                 }
                 else if (nameRadioButton == Instrument[1])
                 {
-
+                    g.DrawLine(pen, e.X, e.Y,  x, y );
                 }
                 else if (nameRadioButton == Instrument[2])
                 {
@@ -292,7 +298,6 @@ namespace Paint
         }
         #endregion Paint
 
-
         #region Palitres
         private void PalitresColor()
         {
@@ -349,7 +354,7 @@ namespace Paint
                 myColor = colorDialog1.Color;
 
                 onePalit.BackColor = myColor;
-
+                myBrushPen.Color = myColor;
                 pen.Color= myColor;
                              
                 PrintViewFigure();
@@ -518,6 +523,19 @@ namespace Paint
             }
         }
 
-       
+        private void Font_f_Click(object sender, EventArgs e)
+        {
+            if (fontDialog1.ShowDialog() == DialogResult.OK)
+            {
+                font = fontDialog1.Font;
+                textBox1.Font = font;
+
+            }
+        }
+
+        private void PrintLists_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

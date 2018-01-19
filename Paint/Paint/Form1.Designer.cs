@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.buttonNew = new System.Windows.Forms.Button();
             this.buttonOpen = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
@@ -54,6 +55,9 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.PrintLists = new System.Windows.Forms.Button();
+            this.printDialog1 = new System.Windows.Forms.PrintDialog();
+            this.PreviewLists = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.widthPen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -109,9 +113,9 @@
             this.groupBox1.Controls.Add(this.Figure);
             this.groupBox1.Controls.Add(this.Ruler);
             this.groupBox1.Controls.Add(this.Pen);
-            this.groupBox1.Location = new System.Drawing.Point(12, 128);
+            this.groupBox1.Location = new System.Drawing.Point(12, 196);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(75, 116);
+            this.groupBox1.Size = new System.Drawing.Size(75, 117);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Mode";
@@ -175,9 +179,9 @@
             "2",
             "3",
             "4"});
-            this.comboBox1.Location = new System.Drawing.Point(552, 297);
+            this.comboBox1.Location = new System.Drawing.Point(552, 332);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.Size = new System.Drawing.Size(119, 21);
             this.comboBox1.TabIndex = 5;
             this.comboBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox1_DrawItem);
             // 
@@ -185,7 +189,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Location = new System.Drawing.Point(552, 322);
+            this.label1.Location = new System.Drawing.Point(552, 360);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(121, 23);
             this.label1.TabIndex = 6;
@@ -194,18 +198,20 @@
             // 
             // Font_f
             // 
-            this.Font_f.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.Font_f.Location = new System.Drawing.Point(450, 321);
+            this.Font_f.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Font_f.Location = new System.Drawing.Point(450, 359);
             this.Font_f.Name = "Font_f";
             this.Font_f.Size = new System.Drawing.Size(75, 23);
             this.Font_f.TabIndex = 7;
             this.Font_f.Text = "Font";
             this.Font_f.UseVisualStyleBackColor = true;
+            this.Font_f.Click += new System.EventHandler(this.Font_f_Click);
             // 
             // checkBox1
             // 
+            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(450, 294);
+            this.checkBox1.Location = new System.Drawing.Point(450, 332);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(83, 17);
             this.checkBox1.TabIndex = 8;
@@ -215,8 +221,9 @@
             // 
             // label2
             // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(251, 327);
+            this.label2.Location = new System.Drawing.Point(251, 365);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(31, 13);
             this.label2.TabIndex = 9;
@@ -224,8 +231,9 @@
             // 
             // label3
             // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(251, 293);
+            this.label3.Location = new System.Drawing.Point(251, 331);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(38, 13);
             this.label3.TabIndex = 10;
@@ -233,7 +241,8 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(304, 324);
+            this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.textBox1.Location = new System.Drawing.Point(304, 362);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(121, 20);
             this.textBox1.TabIndex = 11;
@@ -241,7 +250,8 @@
             // 
             // widthPen
             // 
-            this.widthPen.Location = new System.Drawing.Point(340, 291);
+            this.widthPen.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.widthPen.Location = new System.Drawing.Point(340, 329);
             this.widthPen.Maximum = new decimal(new int[] {
             -1530494977,
             232830,
@@ -276,7 +286,8 @@
             // 
             // viewFigure
             // 
-            this.viewFigure.Location = new System.Drawing.Point(12, 281);
+            this.viewFigure.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.viewFigure.Location = new System.Drawing.Point(12, 319);
             this.viewFigure.Name = "viewFigure";
             this.viewFigure.Size = new System.Drawing.Size(91, 63);
             this.viewFigure.TabIndex = 14;
@@ -285,8 +296,9 @@
             // 
             // tyPalit
             // 
+            this.tyPalit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tyPalit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tyPalit.Location = new System.Drawing.Point(166, 294);
+            this.tyPalit.Location = new System.Drawing.Point(166, 332);
             this.tyPalit.Name = "tyPalit";
             this.tyPalit.Size = new System.Drawing.Size(51, 49);
             this.tyPalit.TabIndex = 15;
@@ -295,8 +307,9 @@
             // 
             // onePalit
             // 
+            this.onePalit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.onePalit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.onePalit.Location = new System.Drawing.Point(136, 281);
+            this.onePalit.Location = new System.Drawing.Point(136, 319);
             this.onePalit.Name = "onePalit";
             this.onePalit.Size = new System.Drawing.Size(51, 49);
             this.onePalit.TabIndex = 16;
@@ -321,14 +334,39 @@
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Location = new System.Drawing.Point(93, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(580, 263);
+            this.panel1.Size = new System.Drawing.Size(580, 301);
             this.panel1.TabIndex = 17;
+            // 
+            // PrintLists
+            // 
+            this.PrintLists.Location = new System.Drawing.Point(12, 129);
+            this.PrintLists.Name = "PrintLists";
+            this.PrintLists.Size = new System.Drawing.Size(75, 23);
+            this.PrintLists.TabIndex = 18;
+            this.PrintLists.Text = "Print";
+            this.PrintLists.UseVisualStyleBackColor = true;
+            this.PrintLists.Click += new System.EventHandler(this.PrintLists_Click);
+            // 
+            // printDialog1
+            // 
+            this.printDialog1.UseEXDialog = true;
+            // 
+            // PreviewLists
+            // 
+            this.PreviewLists.Location = new System.Drawing.Point(12, 158);
+            this.PreviewLists.Name = "PreviewLists";
+            this.PreviewLists.Size = new System.Drawing.Size(75, 23);
+            this.PreviewLists.TabIndex = 19;
+            this.PreviewLists.Text = "Preview";
+            this.PreviewLists.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(683, 354);
+            this.ClientSize = new System.Drawing.Size(683, 392);
+            this.Controls.Add(this.PreviewLists);
+            this.Controls.Add(this.PrintLists);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.onePalit);
             this.Controls.Add(this.tyPalit);
@@ -346,6 +384,8 @@
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonOpen);
             this.Controls.Add(this.buttonNew);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(699, 393);
             this.Name = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -391,6 +431,9 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button PrintLists;
+        private System.Windows.Forms.PrintDialog printDialog1;
+        private System.Windows.Forms.Button PreviewLists;
     }
 }
 
