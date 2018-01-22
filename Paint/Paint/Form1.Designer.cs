@@ -359,6 +359,7 @@
             this.PreviewLists.TabIndex = 19;
             this.PreviewLists.Text = "Preview";
             this.PreviewLists.UseVisualStyleBackColor = true;
+            this.PreviewLists.Click += new System.EventHandler(this.PreviewLists_Click);
             // 
             // Form1
             // 

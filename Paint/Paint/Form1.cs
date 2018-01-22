@@ -537,5 +537,10 @@ namespace Paint
         {
 
         }
+
+        private void PreviewLists_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
