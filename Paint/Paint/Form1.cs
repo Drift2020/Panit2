@@ -71,6 +71,14 @@ namespace Paint
         int widthPrev = 797;
         int heightPrev = 1127;
 
+        int minPage = 0;
+        int maxPage = 0;
+
+        int countPage = 0;
+
+        bool pageList = false;
+        
+
         int numberStylePen=0;
         string str = "Transp.";
         int sizeStr = 10;
@@ -572,20 +580,36 @@ namespace Paint
                 // обрабатывая событие PrintPage и используя Graphics, включенный в класс PrintPageEventArgs.
 
                 // загружаем изображение из файла
+                if (countPage > minPage && countPage > maxPage) ;
 
                 Image im1 = new Bitmap(pictureBox1.Image);
               
                 Graphics gr = e.Graphics;
                
+                if(minPage!=0)
+                {
+                    if(widthNow==0)
+                    {
+
+                    }
+
+                    if (widthNow*minPage < im1.Width)
+                        gr.DrawImage(im1, new Rectangle(myPointList.x, myPointList.y, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), new Rectangle(widthNow, heightNow, e.MarginBounds.Width*minPage + 200, e.MarginBounds.Height + 200), GraphicsUnit.Pixel);
+                    else if(heightNow * minPage < im1.Height)
+                }
+                else
                 gr.DrawImage(im1, new Rectangle(myPointList.x, myPointList.y, e.MarginBounds.Width+200, e.MarginBounds.Height + 200), new Rectangle(widthNow, heightNow, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), GraphicsUnit.Pixel);
               
                 widthNow += e.MarginBounds.Width + 200;
+             
                 if (widthNow < im1.Width)
                 {
+                    countPage++;
                     e.HasMorePages = true;
                 }
                 else
                 {
+                    countPage++;
                     widthNow = 0;
                     heightNow += e.MarginBounds.Height + 200;
                     if (heightNow < im1.Height)
@@ -623,8 +647,14 @@ namespace Paint
                 // Если выбрана кнопка OK, то печатаем документ
                 if (result == DialogResult.OK)// модальный диалог
                 {
-                   
+
+                    minPage = printDialog1.PrinterSettings.FromPage;
+                    maxPage = printDialog1.PrinterSettings.ToPage;
+
                     doc.Print();
+
+                    //for (int i=0;i < printDialog1.PrinterSettings.MaximumCopies;i++)
+                    //doc.Print();
                 }
             }
             catch (Exception ex)
@@ -656,9 +686,6 @@ namespace Paint
             }
         }
 
-        private void PreviewLists_Click(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 }
