@@ -576,10 +576,10 @@ namespace Paint
                 Image im1 = new Bitmap(pictureBox1.Image);
               
                 Graphics gr = e.Graphics;
-
-                gr.DrawImage(im1, new Rectangle(myPointList.x, myPointList.y, myPointList.width, myPointList.height), new Rectangle(widthNow, heightNow, myPointList.width, myPointList.height), GraphicsUnit.Pixel);
+               
+                gr.DrawImage(im1, new Rectangle(myPointList.x, myPointList.y, e.MarginBounds.Width+200, e.MarginBounds.Height + 200), new Rectangle(widthNow, heightNow, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), GraphicsUnit.Pixel);
               
-                widthNow += myPointList.width;
+                widthNow += e.MarginBounds.Width + 200;
                 if (widthNow < im1.Width)
                 {
                     e.HasMorePages = true;
@@ -587,7 +587,7 @@ namespace Paint
                 else
                 {
                     widthNow = 0;
-                    heightNow+= myPointList.height;
+                    heightNow += e.MarginBounds.Height + 200;
                     if (heightNow < im1.Height)
                     {
                         e.HasMorePages = true;
@@ -600,6 +600,7 @@ namespace Paint
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
             }
         }
         private void PrintLists_Click(object sender, EventArgs e)
@@ -622,13 +623,13 @@ namespace Paint
                 // Если выбрана кнопка OK, то печатаем документ
                 if (result == DialogResult.OK)// модальный диалог
                 {
-                  
+                   
                     doc.Print();
                 }
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -651,6 +652,7 @@ namespace Paint
             }
             catch (Exception ex)
             {
+                 MessageBox.Show(ex.Message);
             }
         }
     }
