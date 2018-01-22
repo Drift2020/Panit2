@@ -349,6 +349,7 @@
             // 
             // printDialog1
             // 
+            this.printDialog1.AllowSomePages = true;
             this.printDialog1.UseEXDialog = true;
             // 
             // PreviewLists
