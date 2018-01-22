@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,23 @@ using System.IO;
 
 namespace Paint
 {
+    struct PointList {
+        public int x;
+        public int y;
+        public int width;
+        public int height;
+
+       
+
+        public void PointListE(int x, int y, int width, int height)
+        {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+
+        }
+    }
     public partial class Form1 : Form, Interface.IGlobal
     {
         #region event
@@ -35,6 +53,10 @@ namespace Paint
         SolidBrush myBrushPen;
         Font tempFont;
         Font font;
+       
+        
+
+
         bool Transparent { set { checkBox1.Checked = value; }get { return checkBox1.Checked; } }
         bool rectangle;
         float WidthPen { set { widthPen.Value = Decimal.Parse(value.ToString()); }get { return float.Parse(widthPen.Value.ToString()); } }
@@ -42,6 +64,10 @@ namespace Paint
         int y;
         int width = 1000;
         int height = 300;
+
+        int widthPrev = 797;
+        int heightPrev = 1127;
+
         int numberStylePen=0;
         string str = "Transp.";
         int sizeStr = 10;
@@ -68,6 +94,7 @@ namespace Paint
             myBrushPen = new SolidBrush(myColor);
             font = new Font("Arial", sizeStr);
             openFileDialog1.InitialDirectory = saveFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+         
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -532,10 +559,81 @@ namespace Paint
 
             }
         }
+        private void Doc_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            try
+            {
+                PointList myPointList = new PointList();
+                myPointList.PointListE(0, 0, widthPrev, heightPrev);
+                // Метод Print класса PrintDocument задает выводимые на печать данные, 
+                // обрабатывая событие PrintPage и используя Graphics, включенный в класс PrintPageEventArgs.
 
+                // загружаем изображение из файла
+
+                Image im1 = new Bitmap(pictureBox1.Image);
+              
+                Graphics gr = e.Graphics;
+                for (int  heightNow=0; heightNow < im1.Height; heightNow += myPointList.height)
+                {
+                    for (int widthNow = 0; widthNow < im1.Width; widthNow+= im1.Width)
+                    {
+                        gr.DrawImage(im1, new Rectangle(widthNow, heightNow, myPointList.width, myPointList.height), new Rectangle(myPointList.x, myPointList.y, myPointList.width, myPointList.height), GraphicsUnit.Pixel);
+                    }
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
         private void PrintLists_Click(object sender, EventArgs e)
         {
+            try
+            {
+                // Создаем документ и прикрепляем к нему обработчик события
+                PrintDocument doc = new PrintDocument(); // новое задание печати
 
+                // Событие PrintPage происходит, когда необходимо вывести на печать текущую страницу.
+                doc.PrintPage += this.Doc_PrintPage;
+
+                // PrintDialog вызывает стандартное диалоговое окно печати Microsoft Windows, 
+                //позволяющее пользователю выбирать принтер и его свойства
+                // PrintDialog printDialog1 = new PrintDialog();
+
+                // Получает или задает документ для предварительного просмотра.
+                printDialog1.Document = doc;
+                DialogResult result = printDialog1.ShowDialog();
+
+                // Если выбрана кнопка OK, то печатаем документ
+                if (result == DialogResult.OK)
+                {
+                    doc.Print(); // Запускаем процесс печати документа.
+                    // Print задает выводимые на печать данные, обрабатывая событие PrintPage и используя Graphics, включенный в класс PrintPageEventArgs.
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        private void PreviewLists_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Создаем документ и прикрепляем к нему обработчик события
+                PrintDocument doc = new PrintDocument(); // новое задание печати
+
+                // Событие PrintPage происходит, когда необходимо вывести на печать текущую страницу.
+                doc.PrintPage += this.Doc_PrintPage;
+
+                // PrintPreviewDialog представляет стандартное диалоговое окно предварительного просмотра
+                PrintPreviewDialog printPreviewDialog1 = new PrintPreviewDialog();
+                printPreviewDialog1.Document = doc; // Получает или задает документ для предварительного просмотра.
+                printPreviewDialog1.Show();
+            }
+            catch (Exception ex)
+            {
+            }
         }
     }
 }
