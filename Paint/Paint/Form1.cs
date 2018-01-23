@@ -573,6 +573,8 @@ namespace Paint
 
             }
         }
+
+
         private void printPage(Image im ,PrintPageEventArgs e)
         {
             widthNow += e.MarginBounds.Width + 200;
@@ -619,6 +621,19 @@ namespace Paint
                 }
             }
         }
+        private void StartPage(Image im, PrintPageEventArgs e)
+        {
+            for (int i=1 ;i<minPage; i++)
+            {
+                widthNow += e.MarginBounds.Width + 200;
+                if (widthNow > im.Width)
+                {
+                    widthNow = 0;
+                    heightNow += e.MarginBounds.Height + 200;
+                    
+                }
+            }
+        }
         private void Doc_PrintPage(object sender, PrintPageEventArgs e)
         {
             try
@@ -635,19 +650,36 @@ namespace Paint
 
                 if (minPage != 0 && countPage < maxPage)
                 {
-                   
 
-                    if(MaxPages==0)
-                        SizePage(im1,e,ref MaxPages);
+                    if (MaxPages == 0)
+                    {
+                        SizePage(im1, e, ref MaxPages);
+                        StartPage(im1, e);
+                    }
+                    if (maxPage >= MaxPages)                                 
+                    {
+                        throw new Exception("You value max page is not correct.");
+                    }
 
+                    
+
+                  
+                    gr.DrawImage(im1, new Rectangle(myPointList.x, myPointList.y, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200),
+                    new Rectangle(widthNow, heightNow, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), GraphicsUnit.Pixel);
+                    countPage++;
+                    printPage(im1, e);
+                }
+                else if(minPage==0)
+                {
+                    gr.DrawImage(im1, new Rectangle(myPointList.x, myPointList.y, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200),
+                    new Rectangle(widthNow, heightNow, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), GraphicsUnit.Pixel);
+
+                    printPage(im1, e);
                 }
                 else
                 {
-                    gr.DrawImage(im1, new Rectangle(myPointList.x, myPointList.y, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), 
-                        new Rectangle(widthNow, heightNow, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), GraphicsUnit.Pixel);                    
-                }
-                printPage(im1, e);
-
+                    e.HasMorePages = false;
+                }                          
             }
             catch (Exception ex)
             {
