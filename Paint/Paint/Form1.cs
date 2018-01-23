@@ -577,12 +577,12 @@ namespace Paint
             widthNow += e.MarginBounds.Width + 200;
             if (widthNow < im.Width)
             {
-                countPage++;
+               
                 e.HasMorePages = true;
             }
             else
             {
-                countPage++;
+              
                 widthNow = 0;
                 heightNow += e.MarginBounds.Height + 200;
                 if (heightNow < im.Height)
@@ -593,6 +593,10 @@ namespace Paint
                     e.HasMorePages = false;
 
             }
+        }
+        private void printPageElement(Image im, PrintPageEventArgs e)
+        {
+
         }
         private void Doc_PrintPage(object sender, PrintPageEventArgs e)
         {
@@ -608,19 +612,39 @@ namespace Paint
               
                 Graphics gr = e.Graphics;
 
-                if (minPage != 0)
+                if (minPage != 0 && countPage < maxPage)
                 {
-                    if()
+                    int MaxPages = 0;
+                    for(int widthNow=0, heightNow=0, end=0 ; end!=1; )
                     {
+                        widthNow += e.MarginBounds.Width + 200;
+                        if (widthNow < im1.Width)
+                        {
+                            MaxPages++;
 
+
+                        }
+                        else
+                        {
+
+                            widthNow = 0;
+                            heightNow += e.MarginBounds.Height + 200;
+                            if (heightNow < im1.Height)
+                            {
+                                MaxPages++;
+                            }
+                            else
+                                end=1;
+                        }
                     }
 
                 }
                 else
                 {
                     gr.DrawImage(im1, new Rectangle(myPointList.x, myPointList.y, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), new Rectangle(widthNow, heightNow, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), GraphicsUnit.Pixel);
-                    printPage(im1, e);
+                    
                 }
+                printPage(im1, e);
 
             }
             catch (Exception ex)
