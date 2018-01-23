@@ -71,6 +71,7 @@ namespace Paint
         int widthPrev = 797;
         int heightPrev = 1127;
 
+        int MaxPages = 0;
         int minPage = 0;
         int maxPage = 0;
 
@@ -576,8 +577,7 @@ namespace Paint
         {
             widthNow += e.MarginBounds.Width + 200;
             if (widthNow < im.Width)
-            {
-               
+            {             
                 e.HasMorePages = true;
             }
             else
@@ -594,9 +594,30 @@ namespace Paint
 
             }
         }
-        private void printPageElement(Image im, PrintPageEventArgs e)
+        private void SizePage(Image im, PrintPageEventArgs e, ref int MaxPages)
         {
-
+            for (int widthNow = 0, heightNow = 0, end = 0; end != 1;)
+            {
+                widthNow += e.MarginBounds.Width + 200;
+                if (widthNow < im.Width)
+                {
+                    MaxPages++;
+                }
+                else
+                {
+                    widthNow = 0;
+                    heightNow += e.MarginBounds.Height + 200;
+                    if (heightNow < im.Height)
+                    {
+                        MaxPages++;
+                    }
+                    else
+                    {
+                        MaxPages++;
+                        end = 1;
+                    }
+                }
+            }
         }
         private void Doc_PrintPage(object sender, PrintPageEventArgs e)
         {
@@ -614,35 +635,16 @@ namespace Paint
 
                 if (minPage != 0 && countPage < maxPage)
                 {
-                    int MaxPages = 0;
-                    for(int widthNow=0, heightNow=0, end=0 ; end!=1; )
-                    {
-                        widthNow += e.MarginBounds.Width + 200;
-                        if (widthNow < im1.Width)
-                        {
-                            MaxPages++;
+                   
 
-
-                        }
-                        else
-                        {
-
-                            widthNow = 0;
-                            heightNow += e.MarginBounds.Height + 200;
-                            if (heightNow < im1.Height)
-                            {
-                                MaxPages++;
-                            }
-                            else
-                                end=1;
-                        }
-                    }
+                    if(MaxPages==0)
+                        SizePage(im1,e,ref MaxPages);
 
                 }
                 else
                 {
-                    gr.DrawImage(im1, new Rectangle(myPointList.x, myPointList.y, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), new Rectangle(widthNow, heightNow, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), GraphicsUnit.Pixel);
-                    
+                    gr.DrawImage(im1, new Rectangle(myPointList.x, myPointList.y, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), 
+                        new Rectangle(widthNow, heightNow, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), GraphicsUnit.Pixel);                    
                 }
                 printPage(im1, e);
 
@@ -672,8 +674,8 @@ namespace Paint
                 // Если выбрана кнопка OK, то печатаем документ
                 if (result == DialogResult.OK)// модальный диалог
                 {
-
-                    countPage= minPage = printDialog1.PrinterSettings.FromPage;
+                    MaxPages = 0;
+                    countPage = minPage = printDialog1.PrinterSettings.FromPage;
                     maxPage = printDialog1.PrinterSettings.ToPage;
 
                     doc.Print();
