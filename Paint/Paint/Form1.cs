@@ -572,6 +572,28 @@ namespace Paint
 
             }
         }
+        private void printPage(Image im ,PrintPageEventArgs e)
+        {
+            widthNow += e.MarginBounds.Width + 200;
+            if (widthNow < im.Width)
+            {
+                countPage++;
+                e.HasMorePages = true;
+            }
+            else
+            {
+                countPage++;
+                widthNow = 0;
+                heightNow += e.MarginBounds.Height + 200;
+                if (heightNow < im.Height)
+                {
+                    e.HasMorePages = true;
+                }
+                else
+                    e.HasMorePages = false;
+
+            }
+        }
         private void Doc_PrintPage(object sender, PrintPageEventArgs e)
         {
             try
@@ -580,47 +602,24 @@ namespace Paint
                 // обрабатывая событие PrintPage и используя Graphics, включенный в класс PrintPageEventArgs.
 
                 // загружаем изображение из файла
-                if (countPage > minPage && countPage > maxPage) ;
+               
 
                 Image im1 = new Bitmap(pictureBox1.Image);
               
                 Graphics gr = e.Graphics;
-               
-                if(minPage!=0)
-                {
-                    if(widthNow==0)
-                    {
 
-                    }
-
-                    if (widthNow*minPage < im1.Width)
-                        gr.DrawImage(im1, new Rectangle(myPointList.x, myPointList.y, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), new Rectangle(widthNow, heightNow, e.MarginBounds.Width*minPage + 200, e.MarginBounds.Height + 200), GraphicsUnit.Pixel);
-                    else if(heightNow * minPage < im1.Height)
-                }
-                else
-                gr.DrawImage(im1, new Rectangle(myPointList.x, myPointList.y, e.MarginBounds.Width+200, e.MarginBounds.Height + 200), new Rectangle(widthNow, heightNow, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), GraphicsUnit.Pixel);
-              
-                widthNow += e.MarginBounds.Width + 200;
-             
-                if (widthNow < im1.Width)
+                if (minPage != 0)
                 {
-                    countPage++;
-                    e.HasMorePages = true;
+
+
                 }
                 else
                 {
-                    countPage++;
-                    widthNow = 0;
-                    heightNow += e.MarginBounds.Height + 200;
-                    if (heightNow < im1.Height)
-                    {
-                        e.HasMorePages = true;
-                    }
-                    else
-                        e.HasMorePages = false;
-                    
+                    gr.DrawImage(im1, new Rectangle(myPointList.x, myPointList.y, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), new Rectangle(widthNow, heightNow, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), GraphicsUnit.Pixel);
+
+                    printPage(im1, e);
                 }
-            
+
             }
             catch (Exception ex)
             {
