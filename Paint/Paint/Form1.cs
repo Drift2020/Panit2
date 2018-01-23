@@ -648,7 +648,7 @@ namespace Paint
               
                 Graphics gr = e.Graphics;
 
-                if (minPage != 0 && countPage < maxPage)
+                if (minPage != 0 && countPage <= maxPage)
                 {
 
                     if (MaxPages == 0)
