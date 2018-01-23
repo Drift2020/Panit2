@@ -610,13 +610,15 @@ namespace Paint
 
                 if (minPage != 0)
                 {
+                    if()
+                    {
 
+                    }
 
                 }
                 else
                 {
                     gr.DrawImage(im1, new Rectangle(myPointList.x, myPointList.y, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), new Rectangle(widthNow, heightNow, e.MarginBounds.Width + 200, e.MarginBounds.Height + 200), GraphicsUnit.Pixel);
-
                     printPage(im1, e);
                 }
 
@@ -647,7 +649,7 @@ namespace Paint
                 if (result == DialogResult.OK)// модальный диалог
                 {
 
-                    minPage = printDialog1.PrinterSettings.FromPage;
+                    countPage= minPage = printDialog1.PrinterSettings.FromPage;
                     maxPage = printDialog1.PrinterSettings.ToPage;
 
                     doc.Print();
@@ -685,6 +687,5 @@ namespace Paint
             }
         }
 
-        
     }
 }
